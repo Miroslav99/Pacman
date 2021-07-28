@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Pacman</title>
+    <link rel="stylesheet" type="text/css" href="myStyle.css" />
+  </head>
+  <body>
+    <canvas width="1000" height="1000"> </canvas>
+    <script>
+		
+		class Pacman {	
+			constructor(posX, posY) {
+				this.speed = 5;
+				this.posX = posX;
+				this.posY = posY;
+				this.direction = null; // key of move
+				this.power_up = false; // power up
+				this.rotation = true;
+			}
+	
+			setPosition(value,axis) {
+				if(axis == "x") {
+					this.posX += value * this.speed; 
+				}
+				else if(axis == "y") {
+					this.posY += value * this.speed;
+				}
+			}
+	
+			/* 
+			setDirection(direction) {
+    			this.direction = direction;
+			}
+			*/
+	
+			setPowerup(power_up) {
+    			this.power_up = power_up;
+			}
+	
+			setRotation(rotation) {
+    			this.rotation = rotation;
+			}
+			
+		}
+		
+		let pacman = new Pacman(50, 920);
+		
+      window.onload = init;
+      var mapOptions = {};
+      var pacmanOptions = {};
+      var canvas = {};
+      var context = {};
+	  var img = {};
+	  var img2 = {};
+		
+      function init() {
+        canvas = document.querySelector("canvas");
+        context = canvas.getContext("2d");
+		 
+        mapOptions = {
+          imgSrc: "./maze.png",
+          posX: 0,
+          posY: 0,
+          width: canvas.width,
+          height: canvas.height
+        };
+
+        pacmanOptions = {
+          imgSrc: "./Pacman_image56.jpg",
+          posX: 50,
+          posY: 920,
+          width: 50,
+          height: 50
+        };
+		  img = new Image;
+		  img.src = mapOptions.imgSrc;
+		  img2 = new Image;
+		  img2.src = pacmanOptions.imgSrc;
+		  img.onload = function()	{
+			  img2.onload = function() {
+				  window.requestAnimationFrame(gameLoop);
+			  };
+		  };
+      }
+		
+		
+		
+      // The proper game loop
+      function gameLoop() {
+        draw();
+        window.requestAnimationFrame(gameLoop);
+      }
+
+      function draw() {
+		  context.clearRect(0, 0, canvas.width, canvas.height);
+		  context.drawImage(img,mapOptions.posX,mapOptions.posY,mapOptions.width,mapOptions.height);
+		  context.drawImage(img2,pacman.posX,pacman.posY,pacmanOptions.width,pacmanOptions.height);
+		  
+      }
+		
+		document.addEventListener('keydown', move);
+
+		function move(e) {
+			if(e.code == "ArrowUp") {
+				pacman.setPosition(-1,"y");
+			}
+			else if (e.code == "ArrowDown") {
+				pacman.setPosition(1,"y");
+			}
+			else if (e.code == "ArrowLeft")	{
+				pacman.setPosition(-1,"x");
+			}
+			else if (e.code == "ArrowRight") {
+				pacman.setPosition(1,"x");
+			}
+			console.log(pacman);
+		}
+
+    </script>
+  </body>
+</html>
